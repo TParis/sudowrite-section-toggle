@@ -12,5 +12,5 @@
       "128": "icon128_transparent.png"
     }
   },
-  "host_permissions": ["<all_urls>"]
+  "host_permissions": ["https://*.sudowrite.com/*"]
 }
