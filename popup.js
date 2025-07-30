@@ -43,26 +43,29 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
   chrome.scripting.executeScript({
     target: { tabId },
-    func: (sections) => {
-      return sections.map(({ selector }) => {
-        const el = document.querySelector(selector);
-        if (!el) return null;
-        const display = window.getComputedStyle(el).display;
-        return display !== 'none';
-      });
-    },
-    args: [sections]
+    func: () => {
+      return {
+        hasEditor: !!document.querySelector("#editor-section"),
+        title: document.title
+      };
+    }
   }, (results) => {
-    const visibilityStates = results[0].result;
+    const { hasEditor, title } = results[0].result;
 
+    // Only proceed if Sudowrite is in the title and the editor exists
+    if (!hasEditor || !title.toLowerCase().includes("sudowrite")) {
+      console.log("Sudowrite not detected — skipping UI injection.");
+      return;
+    }
+
+    // ✅ Sudowrite is active — now proceed to build the toggles
+
+    // Remove fallback message
+    const notDetected = document.getElementById("notdetected");
+    if (notDetected) notDetected.remove();
+
+    // Build toggles for sections (your sections.forEach starts here)
     sections.forEach(({ name, selector }, i) => {
-
-      // If sudowrite dections are detected, remove "not detected" message
-      const elementToRemove = document.getElementById('notdetected');
-      if (elementToRemove) {
-          elementToRemove.remove();
-      }
-
       const container = document.createElement("div");
       container.className = "toggle";
 
@@ -71,13 +74,13 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
 
       const toggle = document.createElement("input");
       toggle.type = "checkbox";
-      toggle.checked = visibilityStates[i] ?? true;
+      toggle.checked = true;
 
       toggle.addEventListener("change", () => {
         chrome.scripting.executeScript({
           target: { tabId },
-          func: (selector, show) => {
-            document.querySelectorAll(selector).forEach(el => {
+          func: (sel, show) => {
+            document.querySelectorAll(sel).forEach(el => {
               el.style.display = show ? 'block' : 'none';
             });
           },
