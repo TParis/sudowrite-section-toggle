@@ -41,6 +41,7 @@ const togglesDiv = document.getElementById("toggles");
 chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
   const tabId = tabs[0].id;
 
+  // First: check if this is a Sudowrite page and if #editor-section exists
   chrome.scripting.executeScript({
     target: { tabId },
     func: () => {
@@ -49,48 +50,61 @@ chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
         title: document.title
       };
     }
-  }, (results) => {
-    const { hasEditor, title } = results[0].result;
+  }, (checkResult) => {
+    const { hasEditor, title } = checkResult[0].result;
 
-    // Only proceed if Sudowrite is in the title and the editor exists
     if (!hasEditor || !title.toLowerCase().includes("sudowrite")) {
-      console.log("Sudowrite not detected — skipping UI injection.");
-      return;
+      console.log("Sudowrite not detected — not injecting toggles.");
+      return; // Leave #notdetected visible
     }
 
-    // ✅ Sudowrite is active — now proceed to build the toggles
-
-    // Remove fallback message
+    // We're on a Sudowrite page, remove #notdetected
     const notDetected = document.getElementById("notdetected");
     if (notDetected) notDetected.remove();
 
-    // Build toggles for sections (your sections.forEach starts here)
-    sections.forEach(({ name, selector }, i) => {
-      const container = document.createElement("div");
-      container.className = "toggle";
-
-      const label = document.createElement("label");
-      label.textContent = name;
-
-      const toggle = document.createElement("input");
-      toggle.type = "checkbox";
-      toggle.checked = true;
-
-      toggle.addEventListener("change", () => {
-        chrome.scripting.executeScript({
-          target: { tabId },
-          func: (sel, show) => {
-            document.querySelectorAll(sel).forEach(el => {
-              el.style.display = show ? 'block' : 'none';
-            });
-          },
-          args: [selector, toggle.checked]
+    // Now query the display state of each section
+    chrome.scripting.executeScript({
+      target: { tabId },
+      func: (sections) => {
+        return sections.map(({ selector }) => {
+          const el = document.querySelector(selector);
+          if (!el) return null;
+          return window.getComputedStyle(el).display !== 'none';
         });
-      });
+      },
+      args: [sections]
+    }, (results) => {
+      const visibilityStates = results[0].result;
 
-      container.appendChild(label);
-      container.appendChild(toggle);
-      togglesDiv.appendChild(container);
+      sections.forEach(({ name, selector }, i) => {
+        const container = document.createElement("div");
+        container.className = "toggle";
+
+        const label = document.createElement("label");
+        label.textContent = name;
+
+        const toggle = document.createElement("input");
+        toggle.type = "checkbox";
+        toggle.checked = visibilityStates[i] ?? true;
+
+        toggle.addEventListener("change", () => {
+          chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.scripting.executeScript({
+              target: { tabId: tabs[0].id },
+              func: (sel, show) => {
+                document.querySelectorAll(sel).forEach(el => {
+                  el.style.display = show ? 'block' : 'none';
+                });
+              },
+              args: [selector, toggle.checked]
+            });
+          });
+        });
+
+        container.appendChild(label);
+        container.appendChild(toggle);
+        togglesDiv.appendChild(container);
+      });
     });
   });
 });

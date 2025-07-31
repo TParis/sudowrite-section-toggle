@@ -26,7 +26,7 @@ This Chrome extension allows writers using [Sudowrite](https://www.sudowrite.com
 
 ## 📥 Install from Chrome Web Store
 
-👉 **[Install Sudowrite Section Toggle](https://chrome.google.com/webstore/detail/YOUR-EXTENSION-ID)**
+👉 **[Install Sudowrite Section Toggle](https://chromewebstore.google.com/detail/sudowrite-section-toggle/edfnfkgcnnoccppimaonifembbkijkoa)**
 
 ---
 
