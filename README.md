@@ -40,23 +40,23 @@ This Chrome extension allows writers using [Sudowrite](https://www.sudowrite.com
 
 ---
 
-❓ Frequently Asked Questions (FAQ)
-### Does this affect the AI’s ability to use the Story Bible?
+## ❓ Frequently Asked Questions (FAQ)
+#### Does this affect the AI’s ability to use the Story Bible?
 No — hiding a section in the UI with this extension has no impact on how Sudowrite’s AI processes your content. Hidden elements are still present in the DOM and remain fully accessible to the AI engine behind the scenes.
 
-### My UI looks strange or sections are misaligned. What should I do?
+#### My UI looks strange or sections are misaligned. What should I do?
 This can occasionally happen if Sudowrite updates their layout. Simply refreshing the page will reset all styles and restore normal behavior. If problems persist, click the extension icon and toggle the sections again.
 
-### Will this harm or overwrite any of my writing?
+#### Will this harm or overwrite any of my writing?
 Absolutely not. The extension does not modify, delete, or save any content. It only changes the display property of known Sudowrite interface elements — your writing and data are untouched.
 
-### Does this extension store or access my data?
+#### Does this extension store or access my data?
 No. It does not store any information, use cookies, or transmit data to any server. It operates entirely within your browser session and respects user privacy.
 
-### Can I contribute features or fixes?
+#### Can I contribute features or fixes?
 Yes! This project is open source. If you'd like to suggest improvements, add toggles, or help maintain the extension, visit the GitHub repository and submit a pull request or open an issue.
 
-### Is this officially supported by Sudowrite?
+#### Is this officially supported by Sudowrite?
 No. This is a community-built tool and is not affiliated with, endorsed by, or supported by Sudowrite. For official support, please visit Sudowrite.com.
 
 ---
