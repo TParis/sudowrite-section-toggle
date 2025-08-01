@@ -45,7 +45,7 @@ All permissions are narrowly scoped and used solely for local UI control.
 
 If you have any questions or concerns about this extension, you can reach the author at:
 
-**andrew [dot] pearson [at] [your domain or email provider]**
+**tparis00ap@gmail.com**
 
 ---
 
