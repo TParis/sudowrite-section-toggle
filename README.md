@@ -70,7 +70,7 @@ Released under the [MIT License](LICENSE).
 
 ---
 
-## 👁️‍🗨️ 👁️‍🗨️ Privacy Policy
+## 👁️ Privacy Policy
 See the full [Privacy Policy](PRIVACY.md) for details.
 In short: This extension does **not** track your activity, store any data, access cookies, or communicate with any external servers. All functionality runs locally in your browser and only affects the visual layout of the Sudowrite interface.
 
